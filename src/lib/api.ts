@@ -1,6 +1,6 @@
 // src/lib/api.ts
+import { API_BASE_URL } from './constants'; // Import API_BASE_URL from constants.ts
 
-const API_BASE_URL = 'http://localhost:8000';
 export const ERROR_PLACEHOLDER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U1ZTdlYiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xOCAzSDZhMiAyIDAgMCAwLTIgMnYxNGMwIDEuMS45IDIgMiAyaDEyYzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6TTEyIDlhMyAzIDAgMSAwIDAgNmMwLTEuNy0yLTItMi0zLjVBMi41IDIuNSAwIDAgMSAxMiA5eiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTYuNSIgcj0iLjUiIGZpbGw9IiNlNWU3ZWIiLz48L3N2Zz4=';
 
 export interface Font {
