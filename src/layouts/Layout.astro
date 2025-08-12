@@ -1,4 +1,4 @@
---- 
+---
 import "../styles/globals.css";
 interface Props {
 	title: string;
@@ -17,9 +17,9 @@ const { title } = Astro.props;
 		<title>{title}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c&family=Noto+Sans+JP&family=Sawarabi+Mincho&family=Shippori+Mincho&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 	</head>
-	<body class="bg-gray-900 text-white">
+	<body class="bg-gray-900 text-white font-sans">
 		<slot />
 	</body>
 </html>
