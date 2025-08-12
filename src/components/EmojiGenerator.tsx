@@ -227,13 +227,11 @@ const EmojiGenerator: FC = () => {
           <div className="w-full">
             <div className="flex gap-4 w-full justify-center">
               <div>
-                <p className="text-center text-sm text-gray-400 mb-2">Light</p>
                 <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden ring-2 ring-gray-600">
                   <img src={generatedImage} alt="Generated Emoji on light background" className="w-full h-full object-contain" />
                 </div>
               </div>
               <div>
-                <p className="text-center text-sm text-gray-400 mb-2">Dark</p>
                 <div className="w-32 h-32 bg-gray-900 rounded-lg flex items-center justify-center overflow-hidden ring-2 ring-gray-600">
                   <img src={generatedImage} alt="Generated Emoji on dark background" className="w-full h-full object-contain" />
                 </div>
