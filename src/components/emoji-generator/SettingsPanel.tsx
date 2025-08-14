@@ -1,41 +1,22 @@
 import { type FC } from 'react';
 import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { ColorPicker } from './ColorPicker';
-import type { FontCategory } from '@lib/api';
-
-type TextAlign = 'left' | 'center' | 'right';
+import { useEmojiGeneratorContext } from '../../contexts/EmojiGeneratorContext';
 
 interface SettingsPanelProps {
-  text: string;
-  setText: (text: string) => void;
-  font: string;
-  setFont: (font: string) => void;
-  fontCategories: FontCategory[];
-  textAlign: TextAlign;
-  setTextAlign: (align: TextAlign) => void;
-  isSizeFixed: boolean;
-  setIsSizeFixed: (fixed: boolean) => void;
-  isStretchDisabled: boolean;
-  setIsStretchDisabled: (disabled: boolean) => void;
-  textColor: string;
-  setTextColor: (color: string) => void;
-  useBackgroundColor: boolean;
-  setUseBackgroundColor: (use: boolean) => void;
-  backgroundColor: string;
-  setBackgroundColor: (color: string) => void;
-  className?: string; // Add this line
+  className?: string;
 }
 
-export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
-  const { 
+export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
+  const {
     text, setText, font, setFont, fontCategories, textAlign, setTextAlign, 
     isSizeFixed, setIsSizeFixed, isStretchDisabled, setIsStretchDisabled,
     textColor, setTextColor, useBackgroundColor, setUseBackgroundColor, 
-    backgroundColor, setBackgroundColor, className // Destructure className
-  } = props;
+    backgroundColor, setBackgroundColor
+  } = useEmojiGeneratorContext();
 
   return (
-    <div className={`space-y-6 ${className || ''}`}> {/* Apply className */} 
+    <div className={`space-y-6 ${className || ''}`}> 
       <h2 className="text-2xl font-bold">設定</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -78,7 +59,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-2">文字揃え</label>
         <div className="flex w-full bg-gray-700 rounded-lg p-1">
-          {(['left', 'center', 'right'] as TextAlign[]).map((align) => (
+          {(['left', 'center', 'right'] as const).map((align) => (
             <button
               key={align}
               type="button"

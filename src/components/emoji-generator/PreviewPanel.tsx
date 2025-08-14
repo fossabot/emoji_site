@@ -1,18 +1,16 @@
 import { type FC } from 'react';
 import { Loader, Download } from 'lucide-react';
+import { useEmojiGeneratorContext } from '../../contexts/EmojiGeneratorContext';
 
 interface PreviewPanelProps {
-  isLoading: boolean;
-  generatedImage: string | null;
-  error: string | null;
-  text: string;
-  adContent: string | null;
-  className?: string; // Add this line
+  className?: string;
 }
 
-export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage, error, text, adContent, className }) => {
+export const PreviewPanel: FC<PreviewPanelProps> = ({ className }) => {
+  const { isLoading, generatedImage, error, text, adContent } = useEmojiGeneratorContext();
+
   return (
-    <div className={`flex flex-col items-center justify-center ${className || ''}`}> {/* Apply className */} 
+    <div className={`flex flex-col items-center justify-center ${className || ''}`}> 
       <h2 className="text-2xl font-bold mb-4">プレビュー</h2>
       
       {isLoading ? (
@@ -63,4 +61,3 @@ export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage,
     </div>
   );
 };
-
