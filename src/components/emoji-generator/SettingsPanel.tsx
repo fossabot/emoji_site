@@ -33,30 +33,36 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
     <div className={`space-y-6 ${className || ''}`}>
       <h2 className="text-2xl font-bold">設定</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="text" className="block text-sm font-medium text-gray-300 mb-2">
+          <label
+            htmlFor="text"
+            className="mb-2 block text-sm font-medium text-gray-300"
+          >
             テキスト
           </label>
           <textarea
             id="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="w-full rounded border border-gray-600 bg-gray-700 p-2 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             rows={3}
             maxLength={20}
           />
         </div>
 
         <div>
-          <label htmlFor="font" className="block text-sm font-medium text-gray-300 mb-2">
+          <label
+            htmlFor="font"
+            className="mb-2 block text-sm font-medium text-gray-300"
+          >
             フォント
           </label>
           <select
             id="font"
             value={font}
             onChange={(e) => setFont(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="w-full rounded border border-gray-600 bg-gray-700 p-2 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             disabled={fontCategories.length === 0}
           >
             {fontCategories.length === 0 ? (
@@ -65,7 +71,11 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
               fontCategories.map((category) => (
                 <optgroup key={category.name} label={category.name}>
                   {category.fonts.map((f) => (
-                    <option key={f.name} value={f.value} style={{ fontFamily: f.value }}>
+                    <option
+                      key={f.name}
+                      value={f.value}
+                      style={{ fontFamily: f.value }}
+                    >
                       {f.name}
                     </option>
                   ))}
@@ -77,14 +87,15 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
       </div>
 
       <div>
-        <p className="block text-sm font-medium text-gray-300 mb-2">文字揃え</p>
-        <div className="flex w-full bg-gray-700 rounded-lg p-1">
+        <p className="mb-2 block text-sm font-medium text-gray-300">文字揃え</p>
+        <div className="flex w-full rounded-lg bg-gray-700 p-1">
           {(['left', 'center', 'right'] as const).map((align) => (
             <button
               key={align}
               type="button"
               onClick={() => setTextAlign(align)}
-              className={`flex-1 flex justify-center items-center p-2 rounded-md transition-colors ${textAlign === align ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-600'}`}>
+              className={`flex flex-1 items-center justify-center rounded-md p-2 transition-colors ${textAlign === align ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-600'}`}
+            >
               {align === 'left' && <AlignLeft size={20} />}
               {align === 'center' && <AlignCenter size={20} />}
               {align === 'right' && <AlignRight size={20} />}
@@ -94,7 +105,9 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
       </div>
 
       <div>
-        <p className="block text-sm font-medium text-gray-300 mb-2">詳細オプション</p>
+        <p className="mb-2 block text-sm font-medium text-gray-300">
+          詳細オプション
+        </p>
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <input
@@ -102,9 +115,12 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
               type="checkbox"
               checked={isSizeFixed}
               onChange={(e) => setIsSizeFixed(e.target.checked)}
-              className="w-5 h-5 rounded bg-gray-700 border-gray-600 text-blue-600 focus:ring-blue-500"
+              className="h-5 w-5 rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
             />
-            <label htmlFor="isSizeFixed" className="text-gray-300 cursor-pointer">
+            <label
+              htmlFor="isSizeFixed"
+              className="cursor-pointer text-gray-300"
+            >
               文字サイズを固定する
             </label>
           </div>
@@ -114,9 +130,12 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
               type="checkbox"
               checked={isStretchDisabled}
               onChange={(e) => setIsStretchDisabled(e.target.checked)}
-              className="w-5 h-5 rounded bg-gray-700 border-gray-600 text-blue-600 focus:ring-blue-500"
+              className="h-5 w-5 rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
             />
-            <label htmlFor="isStretchDisabled" className="text-gray-300 cursor-pointer">
+            <label
+              htmlFor="isStretchDisabled"
+              className="cursor-pointer text-gray-300"
+            >
               自動で伸縮しない
             </label>
           </div>
@@ -131,17 +150,20 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
       />
 
       <div>
-        <div className="flex items-center gap-3 mb-4">
-           <input
-              id="useBackgroundColor"
-              type="checkbox"
-              checked={useBackgroundColor}
-              onChange={(e) => setUseBackgroundColor(e.target.checked)}
-              className="w-5 h-5 rounded bg-gray-700 border-gray-600 text-blue-600 focus:ring-blue-500"
-            />
-            <label htmlFor="useBackgroundColor" className="text-gray-300 cursor-pointer">
-              背景色を追加する
-            </label>
+        <div className="mb-4 flex items-center gap-3">
+          <input
+            id="useBackgroundColor"
+            type="checkbox"
+            checked={useBackgroundColor}
+            onChange={(e) => setUseBackgroundColor(e.target.checked)}
+            className="h-5 w-5 rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
+          />
+          <label
+            htmlFor="useBackgroundColor"
+            className="cursor-pointer text-gray-300"
+          >
+            背景色を追加する
+          </label>
         </div>
         {useBackgroundColor && (
           <ColorPicker

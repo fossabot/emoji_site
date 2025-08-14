@@ -35,7 +35,7 @@ export const useEmojiGenerator = () => {
         }
       } catch (e) {
         setError(
-          'フォントの読み込みに失敗しました。APIの形式が不正か、サーバーがダウンしています。'
+          'フォントの読み込みに失敗しました。APIの形式が不正か、サーバーがダウンしています。',
         );
         console.error(e);
       }
@@ -64,7 +64,9 @@ export const useEmojiGenerator = () => {
             height: EMOJI_HEIGHT,
             align: textAlign,
             color: textColor,
-            background_color: useBackgroundColor ? backgroundColor : '#00000000',
+            background_color: useBackgroundColor
+              ? backgroundColor
+              : '#00000000',
             typeface_name: font,
             size_fixed: isSizeFixed,
             disable_stretch: isStretchDisabled,
@@ -73,7 +75,9 @@ export const useEmojiGenerator = () => {
           const imageBlob = await generateEmoji(payload);
           setGeneratedImage(URL.createObjectURL(imageBlob));
         } catch (err) {
-          setError(err instanceof Error ? err.message : '不明なエラーが発生しました。');
+          setError(
+            err instanceof Error ? err.message : '不明なエラーが発生しました。',
+          );
           setGeneratedImage(ERROR_PLACEHOLDER_IMAGE);
         } finally {
           setIsLoading(false);

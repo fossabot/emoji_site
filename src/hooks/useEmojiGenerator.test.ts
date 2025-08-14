@@ -48,7 +48,7 @@ describe('useEmojiGenerator', () => {
       () => {
         expect(api.generateEmoji).toHaveBeenCalledTimes(1);
       },
-      { timeout: DEBOUNCE_TIME_MS + 250 } // Wait for debounce time + buffer
+      { timeout: DEBOUNCE_TIME_MS + 250 }, // Wait for debounce time + buffer
     );
   });
 
@@ -67,7 +67,9 @@ describe('useEmojiGenerator', () => {
       { name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] },
     ];
     vi.mocked(api.fetchFonts).mockResolvedValue(mockFonts);
-    vi.mocked(api.generateEmoji).mockRejectedValue(new Error('Generation failed'));
+    vi.mocked(api.generateEmoji).mockRejectedValue(
+      new Error('Generation failed'),
+    );
 
     const { result } = renderHook(() => useEmojiGenerator());
     await waitFor(() => expect(result.current.font).toBe('font1'));
