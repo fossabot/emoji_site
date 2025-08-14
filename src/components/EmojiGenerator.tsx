@@ -89,8 +89,8 @@ const EmojiGenerator: FC = () => {
 
   return (
     <div className="card bg-gray-800 p-6 rounded-lg shadow-lg max-w-4xl mx-auto p-8">
-      <h2 className="text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-6 text-center">絵文字ジェネレーター</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <h2 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-6 text-center">絵文字ジェネレーター</h2>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <SettingsPanel
           text={text}
           setText={setText}
@@ -109,6 +109,7 @@ const EmojiGenerator: FC = () => {
           setUseBackgroundColor={setUseBackgroundColor}
           backgroundColor={backgroundColor}
           setBackgroundColor={setBackgroundColor}
+          className="md:col-span-2"
         />
         <PreviewPanel
           isLoading={isLoading}
@@ -116,6 +117,7 @@ const EmojiGenerator: FC = () => {
           error={error}
           text={text}
           adContent={adContent}
+          className="md:col-span-2 w-full"
         />
       </div>
     </div>

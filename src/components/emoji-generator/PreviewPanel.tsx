@@ -7,11 +7,12 @@ interface PreviewPanelProps {
   error: string | null;
   text: string;
   adContent: string | null;
+  className?: string; // Add this line
 }
 
-export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage, error, text, adContent }) => {
+export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage, error, text, adContent, className }) => {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className={`flex flex-col items-center justify-center ${className || ''}`}> {/* Apply className */} 
       <h2 className="text-2xl font-bold mb-4">プレビュー</h2>
       
       {isLoading ? (
@@ -62,3 +63,4 @@ export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage,
     </div>
   );
 };
+

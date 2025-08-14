@@ -23,6 +23,7 @@ interface SettingsPanelProps {
   setUseBackgroundColor: (use: boolean) => void;
   backgroundColor: string;
   setBackgroundColor: (color: string) => void;
+  className?: string; // Add this line
 }
 
 export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
@@ -30,46 +31,48 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
     text, setText, font, setFont, fontCategories, textAlign, setTextAlign, 
     isSizeFixed, setIsSizeFixed, isStretchDisabled, setIsStretchDisabled,
     textColor, setTextColor, useBackgroundColor, setUseBackgroundColor, 
-    backgroundColor, setBackgroundColor 
+    backgroundColor, setBackgroundColor, className // Destructure className
   } = props;
 
   return (
-    <div className="card bg-gray-800 p-6 rounded-lg shadow-lg space-y-6">
+    <div className={`space-y-6 ${className || ''}`}> {/* Apply className */} 
       <h2 className="text-2xl font-bold">設定</h2>
       
-      <div>
-        <label htmlFor="text" className="block text-sm font-medium text-gray-300 mb-2">テキスト</label>
-        <textarea
-          id="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-          rows={3}
-          maxLength={20}
-        />
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="text" className="block text-sm font-medium text-gray-300 mb-2">テキスト</label>
+          <textarea
+            id="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            rows={3}
+            maxLength={20}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="font" className="block text-sm font-medium text-gray-300 mb-2">フォント</label>
-        <select
-          id="font"
-          value={font}
-          onChange={(e) => setFont(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-          disabled={fontCategories.length === 0}
-        >
-          {fontCategories.length === 0 ? (
-            <option>フォントを読込中...</option>
-          ) : (
-            fontCategories.map((category) => (
-              <optgroup key={category.name} label={category.name}>
-                {category.fonts.map((f) => (
-                  <option key={f.name} value={f.value} style={{ fontFamily: f.value }}>{f.name}</option>
-                ))}
-              </optgroup>
-            ))
-          )}
-        </select>
+        <div>
+          <label htmlFor="font" className="block text-sm font-medium text-gray-300 mb-2">フォント</label>
+          <select
+            id="font"
+            value={font}
+            onChange={(e) => setFont(e.target.value)}
+            className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            disabled={fontCategories.length === 0}
+          >
+            {fontCategories.length === 0 ? (
+              <option>フォントを読込中...</option>
+            ) : (
+              fontCategories.map((category) => (
+                <optgroup key={category.name} label={category.name}>
+                  {category.fonts.map((f) => (
+                    <option key={f.name} value={f.value} style={{ fontFamily: f.value }}>{f.name}</option>
+                  ))}
+                </optgroup>
+              ))
+            )}
+          </select>
+        </div>
       </div>
 
       <div>
