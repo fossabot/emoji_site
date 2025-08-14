@@ -5,7 +5,10 @@
     "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
-      "@lib/*": ["./src/lib/*"]
+      "@lib/*": ["./src/lib/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@contexts/*": ["./src/contexts/*"]
     },
     "moduleResolution": "bundler"
   }

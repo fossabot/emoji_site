@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { Loader, Download } from 'lucide-react';
-import { useEmojiGeneratorContext } from '../../contexts/EmojiGeneratorContext';
+import { useEmojiGeneratorContext } from '@contexts/EmojiGeneratorContext';
 
 interface PreviewPanelProps {
   className?: string;

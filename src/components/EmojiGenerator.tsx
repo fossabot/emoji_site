@@ -1,8 +1,8 @@
 import { type FC } from 'react';
-import { useEmojiGenerator } from '../hooks/useEmojiGenerator';
-import { SettingsPanel } from './emoji-generator/SettingsPanel';
-import { PreviewPanel } from './emoji-generator/PreviewPanel';
-import { EmojiGeneratorProvider } from '../contexts/EmojiGeneratorContext';
+import { useEmojiGenerator } from '@hooks/useEmojiGenerator';
+import { SettingsPanel } from '@components/emoji-generator/SettingsPanel';
+import { PreviewPanel } from '@components/emoji-generator/PreviewPanel';
+import { EmojiGeneratorProvider } from '@contexts/EmojiGeneratorContext';
 
 const EmojiGenerator: FC = () => {
   const emojiGeneratorState = useEmojiGenerator();

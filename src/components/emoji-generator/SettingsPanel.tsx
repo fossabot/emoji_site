@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
-import { ColorPicker } from './ColorPicker';
-import { useEmojiGeneratorContext } from '../../contexts/EmojiGeneratorContext';
+import { ColorPicker } from '@components/emoji-generator/ColorPicker';
+import { useEmojiGeneratorContext } from '@contexts/EmojiGeneratorContext';
 import { PRESET_COLORS } from '@lib/constants';
 
 interface SettingsPanelProps {
