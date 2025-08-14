@@ -1,16 +1,87 @@
-import { useState, useEffect, type FC } from 'react';
-import { HexColorPicker } from 'react-colorful';
+import { useState, useEffect, type FC, useMemo } from 'react';
+import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { Loader, Download, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { fetchFonts, generateEmoji, ERROR_PLACEHOLDER_IMAGE, type FontCategory } from '@lib/api';
 import { PRESET_COLORS } from '@lib/constants';
 
 type TextAlign = 'left' | 'center' | 'right';
 
+// --- Helper Functions and Components ---
+
+interface Rgba {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
+const hexToRgba = (hex: string): Rgba => {
+  hex = hex.startsWith('#') ? hex.slice(1) : hex;
+  const isShort = hex.length === 3 || hex.length === 4;
+
+  const r = parseInt(isShort ? hex[0] + hex[0] : hex.substring(0, 2), 16);
+  const g = parseInt(isShort ? hex[1] + hex[1] : hex.substring(2, 4), 16);
+  const b = parseInt(isShort ? hex[2] + hex[2] : hex.substring(4, 6), 16);
+  let a = 255;
+  if (hex.length === 4 || hex.length === 8) {
+    a = parseInt(isShort ? hex[3] + hex[3] : hex.substring(6, 8), 16);
+  }
+  
+  return { r, g, b, a: a / 255 };
+};
+
+const rgbaToHex = (rgba: Rgba): string => {
+  const toHex = (c: number) => `0${Math.round(c).toString(16)}`.slice(-2);
+  const r = toHex(rgba.r);
+  const g = toHex(rgba.g);
+  const b = toHex(rgba.b);
+  const a = toHex(rgba.a * 255);
+  return `#${r}${g}${b}${a}`;
+};
+
+const RgbaInputFields: FC<{ color: string; onChange: (color: string) => void }> = ({ color, onChange }) => {
+  const rgba = useMemo(() => hexToRgba(color), [color]);
+
+  const handleRgbaChange = (part: keyof Rgba, value: number) => {
+    if (isNaN(value)) return;
+    const newRgba = { ...rgba, [part]: value };
+    if (part !== 'a') {
+        newRgba[part] = Math.max(0, Math.min(255, value));
+    } else {
+        newRgba.a = Math.max(0, Math.min(1, value));
+    }
+    onChange(rgbaToHex(newRgba));
+  };
+
+  return (
+    <div className="grid grid-cols-4 gap-3 mt-4">
+      {(['r', 'g', 'b', 'a'] as const).map((part) => (
+        <div key={part}>
+          <label htmlFor={`${part}-input`} className="block text-xs font-medium text-gray-400 uppercase">{part}</label>
+          <input
+            id={`${part}-input`}
+            type="number"
+            value={part === 'a' ? rgba.a.toFixed(2) : rgba[part]}
+            onChange={(e) => handleRgbaChange(part, parseFloat(e.target.value))}
+            min={0}
+            max={part === 'a' ? 1 : 255}
+            step={part === 'a' ? 0.01 : 1}
+            className="w-full p-2 mt-1 rounded bg-gray-900 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
+// --- Main Component ---
+
 const EmojiGenerator: FC = () => {
   const [text, setText] = useState('絵文字');
   const [font, setFont] = useState('');
-  const [textColor, setTextColor] = useState('#ffffff');
-  const [backgroundColor, setBackgroundColor] = useState('#000000');
+  const [textColor, setTextColor] = useState('#ffffffff');
+  const [backgroundColor, setBackgroundColor] = useState('#000000ff');
   const [useBackgroundColor, setUseBackgroundColor] = useState(false);
   const [textAlign, setTextAlign] = useState<TextAlign>('center');
   const [isSizeFixed, setIsSizeFixed] = useState(false);
@@ -20,13 +91,12 @@ const EmojiGenerator: FC = () => {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [adContent, setAdContent] = useState<string | null>(null); // New state for ad content
+  const [adContent, setAdContent] = useState<string | null>(null);
 
-  // 1. Fetch fonts on component mount
   useEffect(() => {
-    const loadFonts = async () => { // Renamed to avoid conflict with imported fetchFonts
+    const loadFonts = async () => {
       try {
-        const data = await fetchFonts(); // Use the imported fetchFonts
+        const data = await fetchFonts();
         setFontCategories(data);
         if (data.length > 0 && data[0].fonts.length > 0) {
           setFont(data[0].fonts[0].value);
@@ -39,7 +109,6 @@ const EmojiGenerator: FC = () => {
     loadFonts();
   }, []);
 
-  // 2. Generate emoji when settings change
   useEffect(() => {
     if (!font) return;
 
@@ -50,7 +119,7 @@ const EmojiGenerator: FC = () => {
         return;
       }
 
-      const generateImageFromApi = async () => { // Renamed to avoid conflict with imported generateEmoji
+      const generateImageFromApi = async () => {
         setIsLoading(true);
         setError(null);
         
@@ -64,14 +133,14 @@ const EmojiGenerator: FC = () => {
             width: 128,
             height: 128,
             align: textAlign,
-            color: `${textColor}FF`,
-            background_color: useBackgroundColor ? `${backgroundColor}FF` : '#00000000',
+            color: textColor,
+            background_color: useBackgroundColor ? backgroundColor : '#00000000',
             typeface_name: font,
             size_fixed: isSizeFixed,
             disable_stretch: isStretchDisabled,
           };
 
-          const imageBlob = await generateEmoji(payload); // Use the imported generateEmoji
+          const imageBlob = await generateEmoji(payload);
           setGeneratedImage(URL.createObjectURL(imageBlob));
 
         } catch (err) {
@@ -89,6 +158,12 @@ const EmojiGenerator: FC = () => {
       clearTimeout(handler);
     };
   }, [text, font, textColor, backgroundColor, useBackgroundColor, textAlign, isSizeFixed, isStretchDisabled]);
+
+  const handlePresetColorClick = (setter: (color: string) => void, currentColor: string, preset: string) => {
+    const currentAlpha = hexToRgba(currentColor).a;
+    const { r, g, b } = hexToRgba(preset);
+    setter(rgbaToHex({ r, g, b, a: currentAlpha }));
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto p-8">
@@ -174,15 +249,24 @@ const EmojiGenerator: FC = () => {
                 <button
                   key={preset}
                   type="button"
-                  onClick={() => setTextColor(preset)}
-                  className={`w-8 h-8 rounded-full border-2 transition ${textColor.toLowerCase() === preset.toLowerCase() ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
+                  onClick={() => handlePresetColorClick(setTextColor, textColor, preset)}
+                  className={`w-8 h-8 rounded-full border-2 transition ${textColor.toLowerCase().startsWith(preset.toLowerCase()) ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
                   style={{ backgroundColor: preset }}
                   aria-label={`Set text color to ${preset}`}
                 />
               ))}
             </div>
             <div className="w-full h-auto">
-              <HexColorPicker color={textColor} onChange={setTextColor} style={{ width: '100%', height: '150px' }} />
+               <HexColorPicker
+                color={textColor}
+                onChange={(newColor) => {
+                  const { r, g, b } = hexToRgba(newColor);
+                  const currentA = hexToRgba(textColor).a;
+                  setTextColor(rgbaToHex({ r, g, b, a: currentA }));
+                }}
+                style={{ width: '100%', height: '150px' }}
+              />
+              <RgbaInputFields color={textColor} onChange={setTextColor} />
             </div>
           </div>
           <div className="mt-4">
@@ -202,15 +286,24 @@ const EmojiGenerator: FC = () => {
                     <button
                       key={preset}
                       type="button"
-                      onClick={() => setBackgroundColor(preset)}
-                      className={`w-8 h-8 rounded-full border-2 transition ${backgroundColor.toLowerCase() === preset.toLowerCase() ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
+                      onClick={() => handlePresetColorClick(setBackgroundColor, backgroundColor, preset)}
+                      className={`w-8 h-8 rounded-full border-2 transition ${backgroundColor.toLowerCase().startsWith(preset.toLowerCase()) ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
                       style={{ backgroundColor: preset }}
                       aria-label={`Set background color to ${preset}`}
                     />
                   ))}
                 </div>
                 <div className="w-full h-auto">
-                  <HexColorPicker color={backgroundColor} onChange={setBackgroundColor} style={{ width: '100%', height: '150px' }} />
+                  <HexColorPicker
+                    color={backgroundColor}
+                    onChange={(newColor) => {
+                      const { r, g, b } = hexToRgba(newColor);
+                      const currentA = hexToRgba(backgroundColor).a;
+                      setBackgroundColor(rgbaToHex({ r, g, b, a: currentA }));
+                    }}
+                    style={{ width: '100%', height: '150px' }}
+                  />
+                  <RgbaInputFields color={backgroundColor} onChange={setBackgroundColor} />
                 </div>
               </div>
             )}
