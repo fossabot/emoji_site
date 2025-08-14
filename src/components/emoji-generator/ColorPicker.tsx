@@ -1,6 +1,5 @@
 import { type FC, useMemo } from 'react';
 import { HexColorPicker } from 'react-colorful';
-import { PRESET_COLORS } from '@lib/constants';
 
 // --- Helper Functions ---
 
@@ -78,9 +77,10 @@ interface ColorPickerProps {
   label: string;
   color: string;
   onColorChange: (color: string) => void;
+  presetColors?: string[];
 }
 
-export const ColorPicker: FC<ColorPickerProps> = ({ label, color, onColorChange }) => {
+export const ColorPicker: FC<ColorPickerProps> = ({ label, color, onColorChange, presetColors = [] }) => {
 
   const handlePresetClick = (preset: string) => {
     const currentAlpha = hexToRgba(color).a;
@@ -97,18 +97,20 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, color, onColorChange 
   return (
     <div>
       <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {PRESET_COLORS.map((preset) => (
-          <button
-            key={preset}
-            type="button"
-            onClick={() => handlePresetClick(preset)}
-            className={`w-8 h-8 rounded-full border-2 transition ${color.toLowerCase().startsWith(preset.toLowerCase()) ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
-            style={{ backgroundColor: preset }}
-            aria-label={`Set color to ${preset}`}
-          />
-        ))}
-      </div>
+      {presetColors.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {presetColors.map((preset) => (
+            <button
+              key={preset}
+              type="button"
+              onClick={() => handlePresetClick(preset)}
+              className={`w-8 h-8 rounded-full border-2 transition ${color.toLowerCase().startsWith(preset.toLowerCase()) ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
+              style={{ backgroundColor: preset }}
+              aria-label={`Set color to ${preset}`}
+            />
+          ))}
+        </div>
+      )}
       <div className="w-full h-auto">
         <HexColorPicker
           color={color}

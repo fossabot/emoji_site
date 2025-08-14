@@ -2,6 +2,7 @@ import { type FC } from 'react';
 import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { ColorPicker } from './ColorPicker';
 import { useEmojiGeneratorContext } from '../../contexts/EmojiGeneratorContext';
+import { PRESET_COLORS } from '@lib/constants';
 
 interface SettingsPanelProps {
   className?: string;
@@ -98,7 +99,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
         </div>
       </div>
 
-      <ColorPicker label="文字色" color={textColor} onColorChange={setTextColor} />
+      <ColorPicker label="文字色" color={textColor} onColorChange={setTextColor} presetColors={PRESET_COLORS} />
 
       <div>
         <label className="flex items-center gap-3 cursor-pointer mb-4">
@@ -111,7 +112,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = ({ className }) => {
           <span className="text-gray-300">背景色を追加する</span>
         </label>
         {useBackgroundColor && (
-          <ColorPicker label="背景色" color={backgroundColor} onColorChange={setBackgroundColor} />
+          <ColorPicker label="背景色" color={backgroundColor} onColorChange={setBackgroundColor} presetColors={PRESET_COLORS} />
         )}
       </div>
 
