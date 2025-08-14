@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import { fetchFonts, generateEmoji, ERROR_PLACEHOLDER_IMAGE, type FontCategory } from '@lib/api';
+import {
+  fetchFonts,
+  generateEmoji,
+  ERROR_PLACEHOLDER_IMAGE,
+  type FontCategory,
+} from '@lib/api';
+import { EMOJI_WIDTH, EMOJI_HEIGHT, DEBOUNCE_TIME_MS } from '@lib/constants';
 
 type TextAlign = 'left' | 'center' | 'right';
 
@@ -54,8 +60,8 @@ export const useEmojiGenerator = () => {
         try {
           const payload = {
             text: text,
-            width: 128,
-            height: 128,
+            width: EMOJI_WIDTH,
+            height: EMOJI_HEIGHT,
             align: textAlign,
             color: textColor,
             background_color: useBackgroundColor ? backgroundColor : '#00000000',
@@ -75,7 +81,7 @@ export const useEmojiGenerator = () => {
       };
 
       generateImageFromApi();
-    }, 750);
+    }, DEBOUNCE_TIME_MS);
 
     return () => {
       clearTimeout(handler);

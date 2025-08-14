@@ -2,6 +2,7 @@ import { renderHook, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { useEmojiGenerator } from './useEmojiGenerator';
 import * as api from '@lib/api';
+import { DEBOUNCE_TIME_MS } from '@lib/constants';
 
 vi.mock('@lib/api', () => ({
   fetchFonts: vi.fn(),
@@ -42,13 +43,13 @@ describe('useEmojiGenerator', () => {
       result.current.setText('new text');
     });
 
-    // Wait for the debounce timer (750ms) to pass
+    // Wait for the debounce timer to pass
     await waitFor(
       () => {
         expect(api.generateEmoji).toHaveBeenCalledTimes(1);
       },
-      { timeout: 1000 },
-    ); // Wait for up to 1 second
+      { timeout: DEBOUNCE_TIME_MS + 250 } // Wait for debounce time + buffer
+    );
   });
 
   it('should set error state if fetchFonts fails', async () => {
@@ -66,9 +67,7 @@ describe('useEmojiGenerator', () => {
       { name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] },
     ];
     vi.mocked(api.fetchFonts).mockResolvedValue(mockFonts);
-    vi.mocked(api.generateEmoji).mockRejectedValue(
-      new Error('Generation failed'),
-    );
+    vi.mocked(api.generateEmoji).mockRejectedValue(new Error('Generation failed'));
 
     const { result } = renderHook(() => useEmojiGenerator());
     await waitFor(() => expect(result.current.font).toBe('font1'));

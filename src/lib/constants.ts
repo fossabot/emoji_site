@@ -14,3 +14,7 @@ export const PRESET_COLORS = [
 ];
 
 export const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
+
+export const EMOJI_WIDTH = 128;
+export const EMOJI_HEIGHT = 128;
+export const DEBOUNCE_TIME_MS = 750;
