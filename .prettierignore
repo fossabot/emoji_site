@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Logs
+*.log
+
+# Environment variables
+.env*
+
+# Lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
