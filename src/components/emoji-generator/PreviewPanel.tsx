@@ -11,7 +11,7 @@ interface PreviewPanelProps {
 
 export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage, error, text, adContent }) => {
   return (
-    <div className="card bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <h2 className="text-2xl font-bold mb-4">プレビュー</h2>
       
       {isLoading ? (
