@@ -35,7 +35,7 @@ export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage,
           </div>
         </div>
       ) : (
-        <div className="w-48 h-48 flex items-center justify-center">
+        <div className="w-48 h-48 flex items-center justify-center mx-auto">
           <span className="text-gray-400">ここに表示</span>
         </div>
       )}
@@ -46,14 +46,14 @@ export const PreviewPanel: FC<PreviewPanelProps> = ({ isLoading, generatedImage,
         <a
           href={generatedImage}
           download={text ? `${text}.png` : 'emoji.png'}
-          className="mt-6 w-full max-w-xs flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300"
+          className="mt-6 w-full max-w-xs flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 mx-auto"
         >
           <Download size={20} /> ダウンロード
         </a>
       )}
 
       {/* Ad Placement Area */}
-      <div className="mt-8 w-full max-w-xs bg-gray-700 p-4 rounded-lg text-center text-gray-400 text-sm">
+      <div className="mt-8 w-full max-w-xs bg-gray-700 p-4 rounded-lg text-center text-gray-400 text-sm mx-auto">
         {adContent ? (
           <div dangerouslySetInnerHTML={{ __html: adContent }} />
         ) : (
