@@ -10,9 +10,10 @@ vi.mock('@lib/api', () => ({
 }));
 
 describe('useEmojiGenerator', () => {
-
   it('should fetch fonts on mount and update state correctly', async () => {
-    const mockFonts = [{ name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] }];
+    const mockFonts = [
+      { name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] },
+    ];
     vi.mocked(api.fetchFonts).mockResolvedValue(mockFonts);
     vi.mocked(api.generateEmoji).mockResolvedValue(new Blob());
 
@@ -26,13 +27,15 @@ describe('useEmojiGenerator', () => {
   });
 
   it('should call generateEmoji when text changes after a debounce', async () => {
-    const mockFonts = [{ name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] }];
+    const mockFonts = [
+      { name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] },
+    ];
     vi.mocked(api.fetchFonts).mockResolvedValue(mockFonts);
     vi.mocked(api.generateEmoji).mockResolvedValue(new Blob());
 
     const { result } = renderHook(() => useEmojiGenerator());
     await waitFor(() => expect(result.current.font).toBe('font1'));
-    
+
     vi.mocked(api.generateEmoji).mockClear();
 
     act(() => {
@@ -40,9 +43,12 @@ describe('useEmojiGenerator', () => {
     });
 
     // Wait for the debounce timer (750ms) to pass
-    await waitFor(() => {
-      expect(api.generateEmoji).toHaveBeenCalledTimes(1);
-    }, { timeout: 1000 }); // Wait for up to 1 second
+    await waitFor(
+      () => {
+        expect(api.generateEmoji).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 1000 },
+    ); // Wait for up to 1 second
   });
 
   it('should set error state if fetchFonts fails', async () => {
@@ -56,9 +62,13 @@ describe('useEmojiGenerator', () => {
   });
 
   it('should set error state if generateEmoji fails', async () => {
-    const mockFonts = [{ name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] }];
+    const mockFonts = [
+      { name: 'Category 1', fonts: [{ name: 'Font 1', value: 'font1' }] },
+    ];
     vi.mocked(api.fetchFonts).mockResolvedValue(mockFonts);
-    vi.mocked(api.generateEmoji).mockRejectedValue(new Error('Generation failed'));
+    vi.mocked(api.generateEmoji).mockRejectedValue(
+      new Error('Generation failed'),
+    );
 
     const { result } = renderHook(() => useEmojiGenerator());
     await waitFor(() => expect(result.current.font).toBe('font1'));

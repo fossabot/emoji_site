@@ -9,11 +9,13 @@ const EmojiGenerator: FC = () => {
 
   return (
     <EmojiGeneratorProvider value={emojiGeneratorState}>
-      <div className="card bg-gray-800 p-6 rounded-lg shadow-lg max-w-4xl mx-auto p-8">
-        <h2 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-6 text-center">絵文字ジェネレーター</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="card mx-auto max-w-4xl rounded-lg bg-gray-800 p-6 p-8 shadow-lg">
+        <h2 className="mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-center text-4xl font-extrabold tracking-tight text-transparent">
+          絵文字ジェネレーター
+        </h2>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <SettingsPanel className="md:col-span-2" />
-          <PreviewPanel className="md:col-span-2 w-full" />
+          <PreviewPanel className="w-full md:col-span-2" />
         </div>
       </div>
     </EmojiGeneratorProvider>

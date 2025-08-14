@@ -1,4 +1,9 @@
-import { createContext, useContext, type Dispatch, type SetStateAction } from 'react';
+import {
+  createContext,
+  useContext,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import type { FontCategory } from '@lib/api';
 
 type TextAlign = 'left' | 'center' | 'right';
@@ -27,14 +32,18 @@ export interface EmojiGeneratorContextType {
   adContent: string | null;
 }
 
-const EmojiGeneratorContext = createContext<EmojiGeneratorContextType | null>(null);
+const EmojiGeneratorContext = createContext<EmojiGeneratorContextType | null>(
+  null,
+);
 
 export const EmojiGeneratorProvider = EmojiGeneratorContext.Provider;
 
 export const useEmojiGeneratorContext = () => {
   const context = useContext(EmojiGeneratorContext);
   if (!context) {
-    throw new Error('useEmojiGeneratorContext must be used within a EmojiGeneratorProvider');
+    throw new Error(
+      'useEmojiGeneratorContext must be used within a EmojiGeneratorProvider',
+    );
   }
   return context;
 };

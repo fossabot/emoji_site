@@ -21,7 +21,7 @@ const hexToRgba = (hex: string): Rgba => {
   if (hex.length === 4 || hex.length === 8) {
     a = parseInt(isShort ? hex[3] + hex[3] : hex.substring(6, 8), 16);
   }
-  
+
   return { r, g, b, a: a / 255 };
 };
 
@@ -36,25 +36,33 @@ const rgbaToHex = (rgba: Rgba): string => {
 
 // --- Sub-components ---
 
-const RgbaInputFields: FC<{ color: string; onChange: (color: string) => void }> = ({ color, onChange }) => {
+const RgbaInputFields: FC<{
+  color: string;
+  onChange: (color: string) => void;
+}> = ({ color, onChange }) => {
   const rgba = useMemo(() => hexToRgba(color), [color]);
 
   const handleRgbaChange = (part: keyof Rgba, value: number) => {
     if (isNaN(value)) return;
     const newRgba = { ...rgba, [part]: value };
     if (part !== 'a') {
-        newRgba[part] = Math.max(0, Math.min(255, value));
+      newRgba[part] = Math.max(0, Math.min(255, value));
     } else {
-        newRgba.a = Math.max(0, Math.min(1, value));
+      newRgba.a = Math.max(0, Math.min(1, value));
     }
     onChange(rgbaToHex(newRgba));
   };
 
   return (
-    <div className="grid grid-cols-4 gap-3 mt-4">
+    <div className="mt-4 grid grid-cols-4 gap-3">
       {(['r', 'g', 'b', 'a'] as const).map((part) => (
         <div key={part}>
-          <label htmlFor={`${part}-input`} className="block text-xs font-medium text-gray-400 uppercase">{part}</label>
+          <label
+            htmlFor={`${part}-input`}
+            className="block text-xs font-medium uppercase text-gray-400"
+          >
+            {part}
+          </label>
           <input
             id={`${part}-input`}
             type="number"
@@ -63,7 +71,7 @@ const RgbaInputFields: FC<{ color: string; onChange: (color: string) => void }> 
             min={0}
             max={part === 'a' ? 1 : 255}
             step={part === 'a' ? 0.01 : 1}
-            className="w-full p-2 mt-1 rounded bg-gray-900 border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="mt-1 w-full rounded border border-gray-600 bg-gray-900 p-2 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
           />
         </div>
       ))}
@@ -80,8 +88,12 @@ interface ColorPickerProps {
   presetColors?: string[];
 }
 
-export const ColorPicker: FC<ColorPickerProps> = ({ label, color, onColorChange, presetColors = [] }) => {
-
+export const ColorPicker: FC<ColorPickerProps> = ({
+  label,
+  color,
+  onColorChange,
+  presetColors = [],
+}) => {
   const handlePresetClick = (preset: string) => {
     const currentAlpha = hexToRgba(color).a;
     const { r, g, b } = hexToRgba(preset);
@@ -96,22 +108,24 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, color, onColorChange,
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
+      <label className="mb-2 block text-sm font-medium text-gray-300">
+        {label}
+      </label>
       {presetColors.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="mb-4 flex flex-wrap gap-2">
           {presetColors.map((preset) => (
             <button
               key={preset}
               type="button"
               onClick={() => handlePresetClick(preset)}
-              className={`w-8 h-8 rounded-full border-2 transition ${color.toLowerCase().startsWith(preset.toLowerCase()) ? 'border-blue-500 scale-110' : 'border-gray-600'}`}
+              className={`h-8 w-8 rounded-full border-2 transition ${color.toLowerCase().startsWith(preset.toLowerCase()) ? 'scale-110 border-blue-500' : 'border-gray-600'}`}
               style={{ backgroundColor: preset }}
               aria-label={`Set color to ${preset}`}
             />
           ))}
         </div>
       )}
-      <div className="w-full h-auto">
+      <div className="h-auto w-full">
         <HexColorPicker
           color={color}
           onChange={handlePickerChange}

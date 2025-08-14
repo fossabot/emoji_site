@@ -7,51 +7,62 @@ interface PreviewPanelProps {
 }
 
 export const PreviewPanel: FC<PreviewPanelProps> = ({ className }) => {
-  const { isLoading, generatedImage, error, text, adContent } = useEmojiGeneratorContext();
+  const { isLoading, generatedImage, error, text, adContent } =
+    useEmojiGeneratorContext();
 
   return (
-    <div className={`flex flex-col items-center justify-center ${className || ''}`}> 
-      <h2 className="text-2xl font-bold mb-4">プレビュー</h2>
-      
+    <div
+      className={`flex flex-col items-center justify-center ${className || ''}`}
+    >
+      <h2 className="mb-4 text-2xl font-bold">プレビュー</h2>
+
       {isLoading ? (
-        <div className="w-full flex-grow flex items-center justify-center">
+        <div className="flex w-full flex-grow items-center justify-center">
           <Loader className="animate-spin text-gray-400" size={48} />
         </div>
       ) : generatedImage ? (
         <div className="w-full">
-          <div className="flex gap-4 w-full justify-center">
+          <div className="flex w-full justify-center gap-4">
             <div>
-              <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden ring-2 ring-gray-600">
-                <img src={generatedImage} alt="Generated Emoji on light background" className="w-full h-full object-contain" />
+              <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-lg bg-gray-100 ring-2 ring-gray-600">
+                <img
+                  src={generatedImage}
+                  alt="Generated Emoji on light background"
+                  className="h-full w-full object-contain"
+                />
               </div>
             </div>
             <div>
-              <div className="w-32 h-32 bg-gray-900 rounded-lg flex items-center justify-center overflow-hidden ring-2 ring-gray-600">
-                <img src={generatedImage} alt="Generated Emoji on dark background" className="w-full h-full object-contain" />
+              <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-lg bg-gray-900 ring-2 ring-gray-600">
+                <img
+                  src={generatedImage}
+                  alt="Generated Emoji on dark background"
+                  className="h-full w-full object-contain"
+                />
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="w-48 h-48 flex items-center justify-center mx-auto">
+        <div className="mx-auto flex h-48 w-48 items-center justify-center">
           <span className="text-gray-400">ここに表示</span>
         </div>
       )}
 
-      {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
-      
+      {error && <p className="mt-4 text-center text-red-400">{error}</p>}
+
       {generatedImage && !isLoading && (
         <a
           href={generatedImage}
           download={text ? `${text}.png` : 'emoji.png'}
-          className="mt-6 w-full max-w-xs flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 mx-auto"
+          className="mx-auto mt-6 flex w-full max-w-xs items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-3 font-bold text-white transition-colors duration-300 hover:bg-green-700"
         >
           <Download size={20} /> ダウンロード
         </a>
       )}
 
       {/* Ad Placement Area */}
-      <div className="mt-8 w-full max-w-xs bg-gray-700 p-4 rounded-lg text-center text-gray-400 text-sm mx-auto">
+      <div className="mx-auto mt-8 w-full max-w-xs rounded-lg bg-gray-700 p-4 text-center text-sm text-gray-400">
         {adContent ? (
           <div dangerouslySetInnerHTML={{ __html: adContent }} />
         ) : (

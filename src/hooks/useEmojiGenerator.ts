@@ -13,11 +13,11 @@ export const useEmojiGenerator = () => {
   const [isSizeFixed, setIsSizeFixed] = useState(false);
   const [isStretchDisabled, setIsStretchDisabled] = useState(false);
   const [fontCategories, setFontCategories] = useState<FontCategory[]>([]);
-  
+
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [adContent, setAdContent] = useState<string | null>(null);
+  const adContent = null; // This is a placeholder for future use.
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -28,7 +28,9 @@ export const useEmojiGenerator = () => {
           setFont(data[0].fonts[0].value);
         }
       } catch (e) {
-        setError('フォントの読み込みに失敗しました。APIの形式が不正か、サーバーがダウンしています。');
+        setError(
+          'フォントの読み込みに失敗しました。APIの形式が不正か、サーバーがダウンしています。'
+        );
         console.error(e);
       }
     };
@@ -48,10 +50,6 @@ export const useEmojiGenerator = () => {
       const generateImageFromApi = async () => {
         setIsLoading(true);
         setError(null);
-        
-        if (generatedImage && generatedImage.startsWith('blob:')) {
-          URL.revokeObjectURL(generatedImage);
-        }
 
         try {
           const payload = {
@@ -68,7 +66,6 @@ export const useEmojiGenerator = () => {
 
           const imageBlob = await generateEmoji(payload);
           setGeneratedImage(URL.createObjectURL(imageBlob));
-
         } catch (err) {
           setError(err instanceof Error ? err.message : '不明なエラーが発生しました。');
           setGeneratedImage(ERROR_PLACEHOLDER_IMAGE);
@@ -83,21 +80,48 @@ export const useEmojiGenerator = () => {
     return () => {
       clearTimeout(handler);
     };
-  }, [text, font, textColor, backgroundColor, useBackgroundColor, textAlign, isSizeFixed, isStretchDisabled]);
+  }, [
+    text,
+    font,
+    textColor,
+    backgroundColor,
+    useBackgroundColor,
+    textAlign,
+    isSizeFixed,
+    isStretchDisabled,
+  ]);
+
+  // Cleanup for the generated blob URL
+  useEffect(() => {
+    const currentImage = generatedImage;
+    return () => {
+      if (currentImage && currentImage.startsWith('blob:')) {
+        URL.revokeObjectURL(currentImage);
+      }
+    };
+  }, [generatedImage]);
 
   return {
-    text, setText,
-    font, setFont,
-    textColor, setTextColor,
-    backgroundColor, setBackgroundColor,
-    useBackgroundColor, setUseBackgroundColor,
-    textAlign, setTextAlign,
-    isSizeFixed, setIsSizeFixed,
-    isStretchDisabled, setIsStretchDisabled,
+    text,
+    setText,
+    font,
+    setFont,
+    textColor,
+    setTextColor,
+    backgroundColor,
+    setBackgroundColor,
+    useBackgroundColor,
+    setUseBackgroundColor,
+    textAlign,
+    setTextAlign,
+    isSizeFixed,
+    setIsSizeFixed,
+    isStretchDisabled,
+    setIsStretchDisabled,
     fontCategories,
     generatedImage,
     isLoading,
     error,
-    adContent
+    adContent,
   };
 };
